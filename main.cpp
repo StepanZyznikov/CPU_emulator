@@ -10,6 +10,26 @@ public:
         this->ptr = new_ptr;
     }
 
+    stack_child *copy()
+    {
+        auto final_ptr = new(stack_child);
+        stack_child *curr_ptr = final_ptr;
+        stack_child *iter_ptr = this;
+        while (iter_ptr != nullptr)
+        {
+            curr_ptr->data = iter_ptr->data;
+
+            if (iter_ptr->ptr != nullptr) {
+                curr_ptr->ptr = new(stack_child);
+                curr_ptr = curr_ptr->ptr;
+            }
+            else
+                curr_ptr->ptr = nullptr;
+            iter_ptr = iter_ptr->ptr;
+        }
+        return final_ptr;
+    }
+
     [[nodiscard]]
     int top() const {
         return this->data;
@@ -43,6 +63,30 @@ public:
         while(this->ptr != nullptr) {
             this->pop();
         }
+    }
+
+    stack(const stack &orig)
+    {
+        this->ptr = new(stack_child);
+        this->ptr = orig.ptr->copy();
+    }
+
+    stack& operator=(const stack &orig)
+    {
+        this->ptr = new(stack_child);
+        this->ptr = orig.ptr->copy();
+        return *this;
+    }
+
+    stack(stack&& moved) noexcept {
+        this->ptr = moved.ptr;
+        moved.ptr=nullptr;
+    }
+
+    stack& operator=(stack&& moved) noexcept {
+        this->ptr = moved.ptr;
+        moved.ptr=nullptr;
+        return *this;
     }
 
     [[nodiscard]]
