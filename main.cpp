@@ -1,29 +1,52 @@
 #include <iostream>
 
-class stack{
+class stack_child {
 public:
-    stack()
-    {
-        this->ptr = nullptr;
-        this->data = 0;
+    void set_data(int num) {
+        this->data = num;
     }
 
-    ~stack()
-    {
-        stack* curr_ptr = this->ptr;
-        stack* delete_ptr;
-        while (curr_ptr != nullptr)
-        {
-            delete_ptr = curr_ptr;
-            curr_ptr = curr_ptr->ptr;
-            // Delete the current node without calling its destructor
-            //delete(delete_ptr);
+    void set_ptr(stack_child *new_ptr) {
+        this->ptr = new_ptr;
+    }
+
+    [[nodiscard]]
+    int top() const {
+        return this->data;
+    }
+
+    stack_child *pop() {
+        stack_child *temp_ptr = this->ptr;
+        delete(this);
+        return temp_ptr;
+    }
+
+    stack_child *push(int num) {
+        auto *child = new(stack_child);
+        child->data = num;
+        child->ptr = this;
+        return child;
+    }
+
+private:
+    int data;
+    stack_child *ptr;
+};
+
+class stack {
+public:
+    stack() {
+        this->ptr = nullptr;
+    }
+
+    ~stack() {
+        while(this->ptr != nullptr) {
+            this->pop();
         }
     }
 
     [[nodiscard]]
-    bool empty() const
-    {
+    bool empty() const {
         if (this->ptr == nullptr)
             return true;
         else
@@ -31,52 +54,34 @@ public:
     }
 
     [[nodiscard]]
-    int top() const
-    {
+    int top() const {
         if (!this->empty())
-            return this->ptr->data;
+            return ptr->top();
         else
-            return -192;
+            exit(-1);
     }
 
-    void push(int num)
-    {
-        if (this->empty())
-        {
-            this->ptr = new(stack);
-            this->ptr->data = num;
-            this->ptr->ptr = nullptr;
-        }
-        else
-        {
-            stack *temp_ptr = this->ptr;
-            this->ptr = new(stack);
-            this->ptr->ptr = temp_ptr;
-            this->ptr->data = num;
+    void push(int num) {
+        if (!this->empty())
+            this->ptr = this->ptr->push(num);
+        else {
+            this->ptr = new(stack_child);
+            this->ptr->set_data(num);
+            this->ptr->set_ptr(nullptr);
         }
     }
 
-    void pop()
-    {
+    void pop() {
         if (!this->empty())
-        {
-            stack *temp_ptr = this->ptr->ptr;
-            delete(this->ptr);
-            this->ptr = temp_ptr;
-        }
+            this->ptr = this->ptr->pop();
+        else
+            exit(-2);
     }
+
 private:
-    int data;
-    stack* ptr;
+    stack_child *ptr;
 };
 
-int main()
-{
-    stack a;
-    for (int i = 0; i < 5; i += 1)
-    {
-        a.push(i);
-    }
-
+int main() {
     return 0;
 }
