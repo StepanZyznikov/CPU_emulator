@@ -1,9 +1,10 @@
 #include <iostream>
 
+template<typename Type>
 class stack_child {
 public:
-    void set_data(int num) {
-        this->data = num;
+    void set_data(Type in_data) {
+        this->data = in_data;
     }
 
     void set_ptr(stack_child *new_ptr) {
@@ -31,7 +32,7 @@ public:
     }
 
     [[nodiscard]]
-    int top() const {
+    Type top() const {
         return this->data;
     }
 
@@ -41,18 +42,20 @@ public:
         return temp_ptr;
     }
 
-    stack_child *push(int num) {
+    stack_child *push(Type in_data) {
         auto *child = new(stack_child);
-        child->data = num;
+        child->data = in_data;
         child->ptr = this;
         return child;
     }
 
 private:
-    int data;
+    Type data;
     stack_child *ptr;
 };
 
+
+template<typename Type>
 class stack {
 public:
     stack() {
@@ -67,13 +70,13 @@ public:
 
     stack(const stack &orig)
     {
-        this->ptr = new(stack_child);
+        this->ptr = new(stack_child<Type>);
         this->ptr = orig.ptr->copy();
     }
 
     stack& operator=(const stack &orig)
     {
-        this->ptr = new(stack_child);
+        this->ptr = new(stack_child<Type>);
         this->ptr = orig.ptr->copy();
         return *this;
     }
@@ -98,18 +101,18 @@ public:
     }
 
     [[nodiscard]]
-    int top() const {
+    Type top() const {
         if (!this->empty())
             return ptr->top();
         else
             exit(-1);
     }
 
-    void push(int num) {
+    void push(Type num) {
         if (!this->empty())
             this->ptr = this->ptr->push(num);
         else {
-            this->ptr = new(stack_child);
+            this->ptr = new(stack_child<Type>);
             this->ptr->set_data(num);
             this->ptr->set_ptr(nullptr);
         }
@@ -123,7 +126,7 @@ public:
     }
 
 private:
-    stack_child *ptr;
+    stack_child<Type> *ptr;
 };
 
 int main() {
