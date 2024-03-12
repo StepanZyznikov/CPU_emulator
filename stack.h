@@ -18,14 +18,14 @@ namespace st {
         }
 
         stack_child *copy() {
-            auto final_ptr = new(stack_child);
+            auto final_ptr = new stack_child;
             stack_child *curr_ptr = final_ptr;
             stack_child *iter_ptr = this;
             while (iter_ptr != nullptr) {
                 curr_ptr->data = iter_ptr->data;
 
                 if (iter_ptr->ptr != nullptr) {
-                    curr_ptr->ptr = new(stack_child);
+                    curr_ptr->ptr = new stack_child;
                     curr_ptr = curr_ptr->ptr;
                 } else
                     curr_ptr->ptr = nullptr;
@@ -46,7 +46,7 @@ namespace st {
         }
 
         stack_child *push(Type in_data) {
-            auto *child = new(stack_child);
+            auto *child = new stack_child;
             child->data = in_data;
             child->ptr = this;
             return child;
@@ -72,7 +72,7 @@ namespace st {
         }
 
         stack(const stack &orig) {
-            this->ptr = new(stack_child<Type>);
+            this->ptr = new stack_child<Type>;
             this->ptr = orig.ptr->copy();
         }
 
@@ -116,7 +116,7 @@ namespace st {
             if (!this->empty())
                 this->ptr = this->ptr->push(num);
             else {
-                this->ptr = new(stack_child<Type>);
+                this->ptr = new stack_child<Type>;
                 this->ptr->set_data(num);
                 this->ptr->set_ptr(nullptr);
             }
