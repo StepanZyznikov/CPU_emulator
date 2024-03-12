@@ -6,10 +6,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 add_executable(main main.cpp)
 
-add_library(stack STATIC stack.h)
-set_target_properties(stack PROPERTIES LINKER_LANGUAGE CXX)
+add_library(cpu STATIC CPU.h)
+set_target_properties(cpu PROPERTIES LINKER_LANGUAGE CXX)
 
-target_link_libraries(main PRIVATE stack)
+target_link_libraries(main PRIVATE cpu)
 
 # Google tests
 include(FetchContent)

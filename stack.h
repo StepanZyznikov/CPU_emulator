@@ -41,7 +41,7 @@ namespace st {
 
         stack_child *pop() {
             stack_child *temp_ptr = this->ptr;
-            delete (this);
+            delete[] this;
             return temp_ptr;
         }
 
@@ -77,7 +77,7 @@ namespace st {
         }
 
         stack &operator=(const stack &orig) {
-            this->ptr = new(stack_child<Type>);
+            this->ptr = new stack_child<Type>;
             this->ptr = orig.ptr->copy();
             return *this;
         }
@@ -106,7 +106,10 @@ namespace st {
             if (!this->empty())
                 return ptr->top();
             else
+            {
+                std::cout << "Attempt to access top of empty stack!";
                 exit(-1);
+            }
         }
 
         void push(Type num) {
@@ -122,8 +125,6 @@ namespace st {
         void pop() {
             if (!this->empty())
                 this->ptr = this->ptr->pop();
-            else
-                exit(-2);
         }
 
     private:
