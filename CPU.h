@@ -14,38 +14,50 @@ namespace cpu {
     class cpu {
     public:
         void begin() {
-            if (this->exec)
+            if (this->exec) {
+                std::cout << "CPU in already running!" << std::endl;
                 exit(1);
+            }
             this->exec = true;
         }
 
         void end() {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU in not running!" << std::endl;
                 exit(2);
+            }
             this->exec = false;
         }
 
         void push(int value0) {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             this->stack.push(value0);
         }
 
         void pop() {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             this->stack.pop();
         }
 
         void pushr(int reg_id) {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             this->stack.push(this->reg[reg_id]);
         }
 
         void popr(int reg_id) {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             if (this->stack.empty())
             {
                 std::cout << "Stack has to have at least one numbers for POPR!" << std::endl;
@@ -56,8 +68,10 @@ namespace cpu {
         }
 
         void add() {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             if (this->stack.empty())
             {
                 std::cout << "Stack has to have at least two numbers for ADD!" << std::endl;
@@ -76,8 +90,10 @@ namespace cpu {
         }
 
         void sub() {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             if (this->stack.empty())
             {
                 std::cout << "Stack has to have at least two numbers for SUB!" << std::endl;
@@ -96,8 +112,10 @@ namespace cpu {
         }
 
         void mul() {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             if (this->stack.empty())
             {
                 std::cout << "Stack has to have at least two numbers for MUL!" << std::endl;
@@ -116,8 +134,10 @@ namespace cpu {
         }
 
         void div() {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             if (this->stack.empty())
             {
                 std::cout << "Stack has to have at least two numbers for DIV!" << std::endl;
@@ -142,8 +162,10 @@ namespace cpu {
 
         void out()
         {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             if (this->stack.empty())
             {
                 std::cout << "Stack has to have at least one numbers for OUT!" << std::endl;
@@ -155,8 +177,10 @@ namespace cpu {
 
         void in()
         {
-            if (!this->exec)
+            if (!this->exec) {
+                std::cout << "CPU is not running!" << std::endl;
                 exit(3);
+            }
             int a;
             std::cin >> a;
             this->stack.push(a);
@@ -188,6 +212,12 @@ namespace cpu {
         std::ifstream FILE;
         FILE.open(FILE_NAME);
 
+        if (!FILE.is_open())
+        {
+            std::cout << "No such file in " << FILE_NAME << std::endl;
+            exit(8);
+        }
+
         std::string comm;
         cpu a;
 
@@ -208,9 +238,15 @@ namespace cpu {
                     break;
                 }
                 case 3: {
-                    int value0;
+                    std::string value0;
                     FILE >> value0;
-                    a.push(value0);
+                    for (int i = 0; i < value0.length(); i += 1)
+                        if (!isdigit(i))
+                        {
+                            std::cout << "Not a number after PUSH!";
+                            exit(7);
+                        }
+                    a.push(std::stoi(value0));
                     break;
                 }
                 case 4: {
@@ -218,15 +254,27 @@ namespace cpu {
                     break;
                 }
                 case 5: {
-                    int reg0;
+                    std::string reg0;
                     FILE >> reg0;
-                    a.pushr(reg0);
+                    for (int i = 0; i < reg0.length(); i += 1)
+                        if (!isdigit(i))
+                        {
+                            std::cout << "Not a number after PUSH!";
+                            exit(7);
+                        }
+                    a.pushr(std::stoi(reg0));
                     break;
                 }
                 case 6: {
-                    int reg0;
+                    std::string reg0;
                     FILE >> reg0;
-                    a.popr(reg0);
+                    for (int i = 0; i < reg0.length(); i += 1)
+                        if (!isdigit(i))
+                        {
+                            std::cout << "Not a number after PUSH!";
+                            exit(7);
+                        }
+                    a.popr(std::stoi(reg0));
                     break;
                 }
                 case 7: {
