@@ -186,6 +186,10 @@ namespace cpu {
             this->stack.push(a);
         }
 
+        bool is_running() {
+            return this->exec;
+        }
+
         std::deque<int> reg;
 
     private:
@@ -304,6 +308,8 @@ namespace cpu {
             }
         }
 
+        if (a.is_running())
+            std::cout << "Warning! CPU is running!" << std::endl;
         FILE.close();
     }
 }
