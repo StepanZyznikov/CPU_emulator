@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <deque>
 #include "stack.h"
 #include <fstream>
 #include <string>
@@ -186,7 +186,7 @@ namespace cpu {
             this->stack.push(a);
         }
 
-        std::vector<int> reg;
+        std::deque<int> reg;
 
     private:
         bool exec = false;
@@ -240,12 +240,12 @@ namespace cpu {
                 case 3: {
                     std::string value0;
                     FILE >> value0;
-                    for (int i = 0; i < value0.length(); i += 1)
-                        if (!isdigit(i))
-                        {
+                    for (int i = 0; i < value0.length(); i += 1) {
+                        if (!isdigit(value0[i])) {
                             std::cout << "Not a number after PUSH!";
                             exit(7);
                         }
+                    }
                     a.push(std::stoi(value0));
                     break;
                 }
@@ -256,24 +256,24 @@ namespace cpu {
                 case 5: {
                     std::string reg0;
                     FILE >> reg0;
-                    for (int i = 0; i < reg0.length(); i += 1)
-                        if (!isdigit(i))
-                        {
-                            std::cout << "Not a number after PUSH!";
+                    for (int i = 0; i < reg0.length(); i += 1) {
+                        if (!isdigit(reg0[i])) {
+                            std::cout << "Not a number after PUSHR!";
                             exit(7);
                         }
+                    }
                     a.pushr(std::stoi(reg0));
                     break;
                 }
                 case 6: {
                     std::string reg0;
                     FILE >> reg0;
-                    for (int i = 0; i < reg0.length(); i += 1)
-                        if (!isdigit(i))
-                        {
-                            std::cout << "Not a number after PUSH!";
+                    for (int i = 0; i < reg0.length(); i += 1) {
+                        if (!isdigit(reg0[i])) {
+                            std::cout << "Not a number after POPR!";
                             exit(7);
                         }
+                    }
                     a.popr(std::stoi(reg0));
                     break;
                 }
