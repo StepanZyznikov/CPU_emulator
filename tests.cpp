@@ -20,6 +20,10 @@ TEST(top, top1) {
     EXPECT_EQ(a.top(), 123);
 }
 
+TEST(top, top2) {
+    ASSERT_DEATH({st::stack<int> a; a.top();}, "");
+}
+
 TEST(pop, pop1) {
     st::stack<int> a;
     a.push(192);
