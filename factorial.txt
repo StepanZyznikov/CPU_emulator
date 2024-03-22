@@ -1,0 +1,24 @@
+BEGIN
+IN
+POPR 0
+PUSH 1
+POPR 1
+PUSH 1
+POPR 2
+PUSHR 0
+PUSHR 1
+JA 21
+    POP
+    POP
+    PUSHR 1
+    PUSHR 2
+    MUL
+    POPR 2
+    PUSHR 1
+    PUSH 1
+    ADD
+    POPR 1
+    JMP 7
+PUSHR 2
+OUT
+END

@@ -1,0 +1,15 @@
+BEGIN
+IN
+POPR 0
+PUSH 0
+POPR 1
+PUSHR 0
+PUSHR 1
+JEQ 14
+    OUT
+    PUSHR 1
+    PUSH 1
+    ADD
+    POPR 1
+    JMP 5
+END
