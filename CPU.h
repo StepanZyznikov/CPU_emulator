@@ -479,15 +479,17 @@ namespace cpu {
         {
             if (this->exec) {
 
-                return_label = this->curr_label + 2;
+                this->return_label.push(this->curr_label + 2);
                 this->curr_label = 2 * (label - 1);
             }
         }
 
         void ret()
         {
-            if (this->exec)
-                this->curr_label = return_label - 2;
+            if (this->exec) {
+                this->curr_label = this->return_label.top() - 2;
+                this->return_label.pop();
+            }
         }
 
     private:
@@ -496,6 +498,6 @@ namespace cpu {
         std::deque<int> reg;
         std::deque<int> comms;
         int curr_label;
-        int return_label;
+        st::stack<int> return_label;
     };
 }
